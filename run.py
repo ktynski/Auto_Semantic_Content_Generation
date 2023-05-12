@@ -368,7 +368,8 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 
     status.text('Creating final draft...')
-    final_draft = '\n\n'.join(improved_sections)
+    final_draft = '\n\n'.join(['\n'.join(section) for section in improved_sections])
+
 
 
 
