@@ -381,16 +381,7 @@ def main():
     st.markdown('''
     Welcome to the long-form article generator! This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
 
-    Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on current search engine results. 
-
-    The process involves several steps:
-    1. Analyzing the SERPs (Search Engine Results Pages) for the provided topic.
-    2. Generating a Semantic SEO readout.
-    3. Creating an initial outline of the article.
-    4. Improving the initial outline based on the Semantic SEO readout.
-    5. Generating detailed sections for the article based on the improved outline.
-    6. Improving the sections for better readability and context.
-    7. And finally, creating a final draft of the long-form article.
+    Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on current search engine results.
 
     Just input your topic below and let the AI do its magic!
     ''')
