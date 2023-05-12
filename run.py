@@ -14,6 +14,12 @@ import collections
 from nltk.collocations import TrigramAssocMeasures, TrigramCollocationFinder
 from nltk.collocations import QuadgramAssocMeasures, QuadgramCollocationFinder
 import time
+import openai
+import pandas as pd
+import re
+
+import json
+openai.api_key = openai.api_key = os.environ['openai_api_key']
 
 
 
@@ -218,13 +224,7 @@ def summarize_nlp(df):
     summary += f'Most common quadgrams: {top_quadgrams} ({len(quadgram_freqs)} total quadgrams)\n'
     return summary
 
-import openai
-import pandas as pd
-import re
-from IPython.display import Markdown
-openai.api_key = openaikey
-import time
-import json
+
 
 
 
@@ -343,7 +343,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     print(f"Topic: {topic}\n")
 
     print(f"Semantic SEO Readout:")
-    display(Markdown(str(semantic_readout)))
+    #display(Markdown(str(semantic_readout)))
 
     print("Generating initial outline...")
     initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
@@ -365,7 +365,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
-    display(Markdown(final_draft))
+    #display(Markdown(final_draft))
     return final_draft
     
 
