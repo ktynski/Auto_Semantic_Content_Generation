@@ -362,7 +362,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     print("Improving sections...")
     file_names = [f"improved_section_{i+1}.txt" for i in range(len(sections))]
     for i, section in enumerate(sections):
-        improve_section(section, i, model='gpt-4', max_tokens=3000)
+        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=1800)
     print("Improved sections created.\n")
 
     print("Creating final draft...")
