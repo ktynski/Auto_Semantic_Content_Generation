@@ -351,7 +351,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
 
     status.text('Improving the initial outline...')
-    improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=3000)
+    improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=1500)
 
     status.text('Generating sections based on the improved outline...')
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
@@ -361,7 +361,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     improved_sections = []
     for i, section in enumerate(sections):
         status.text(f'Improving section {i+1} of {len(sections)}...')
-        improved_sections.append(improve_section(section, i, model=model, max_tokens=3000))
+        improved_sections.append(improve_section(section, i, model=model, max_tokens=1200))
 
 
     status.text('Creating final draft...')
