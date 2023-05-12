@@ -335,42 +335,32 @@ def concatenate_files(file_names, output_file_name):
 
 
 def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+    status = st.empty()
+    status.text('Analyzing SERPs...')
+    
     query = topic
     results = analyze_serps(query)
     summary = summarize_nlp(results)
 
+    status.text('Generating semantic SEO readout...')
     semantic_readout = generate_semantic_improvements_guide(topic, summary,  model=model, max_tokens=max_tokens_outline)
+    st.markdown(semantic_readout)
     
-
-    print(f"Topic: {topic}\n")
-
-    print(f"Semantic SEO Readout:")
-    st.markdown(str(semantic_readout))
-
-    print("Generating initial outline...")
+    status.text('Generating initial outline...')
     initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
-    print("Initial outline created.\n")
 
-    print("Improving the initial outline...")
-    improved_outline = improve_outline(initial_outline, semantic_readout, model='gpt-4', max_tokens=3000)
-    print("Improved outline created.\n")
-    st.markdown(improved_outline)
+    status.text('Improving the initial outline...')
+    improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=3000)
 
-    print("Generating sections based on the improved outline...")
+    status.text('Generating sections based on the improved outline...')
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
-    print("Sections created.\n")
 
-    print("Improving sections...")
-    file_names = [f"improved_section_{i+1}.txt" for i in range(len(sections))]
-    for i, section in enumerate(sections):
-        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=1800)
-    print("Improved sections created.\n")
+    status.text('Improving sections...')
+    improved_sections = [improve_section(section, i, model=model, max_tokens=3000) for i, section in enumerate(sections)]
 
-    print("Creating final draft...")
-    final_draft = concatenate_files(file_names, "final_draft.txt")
-    
-    return final_draft
-    
+    status.text('Creating final draft...')
+    final_draft = '\n\n'.join(improved_sections)
+
 
 
 
