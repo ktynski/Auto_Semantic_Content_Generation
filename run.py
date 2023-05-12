@@ -164,9 +164,9 @@ def analyze_serps(query):
         # Replace any remaining commas with spaces in the Article Text column
         df.at[index, 'Article Text'] = ' '.join(row['Article Text'].replace(',', ' ').split())
     # Save the final dataframe as an Excel file
-    writer = pd.ExcelWriter('NLP_Based_SERP_Results.xlsx', engine='xlsxwriter')
-    df.to_excel(writer, sheet_name='Sheet1', index=False)
-    writer.save()
+    #writer = pd.ExcelWriter('NLP_Based_SERP_Results.xlsx', engine='xlsxwriter')
+    #df.to_excel(writer, sheet_name='Sheet1', index=False)
+    #writer.save()
     # Return the final dataframe
     return df
 
@@ -231,8 +231,8 @@ def summarize_nlp(df):
 
 
 def save_to_file(filename, content):
-    with open(filename, 'w') as f:
-        f.write("\n".join(content))
+    #with open(filename, 'w') as f:
+        #f.write("\n".join(content))
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     gpt_response = openai.ChatCompletion.create(
@@ -263,19 +263,19 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     response = gpt_response['choices'][0]['message']['content'].strip()
     #print(response)
     formatted_response = response.strip().split('\n')
-    save_to_file("Semantic_SEO_Readout.txt", formatted_response)
+    #save_to_file("Semantic_SEO_Readout.txt", formatted_response)
     return str(response)   
 
 def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1000):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
-    save_to_file("outline.txt", outline)
+    #save_to_file("outline.txt", outline)
     return outline
 
 def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following article outline, please improve and extend this outline significantly as much as you can keeping in mind the SEO keywords and data being provided in our semantic seo readout. Do not include a section about semantic SEO itself, you are using the readout to better inform your creation of the outline. Try and include and extend this as much as you can. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
-    save_to_file("improved_outline.txt", improved_outline)
+    #save_to_file("improved_outline.txt", improved_outline)
     return improved_outline
 
 
@@ -304,14 +304,14 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
         prompt = full_outline + specific_section + ", please write a thorough section that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Keep whatever hierarchy you find. Section text:"
         section = generate_content(prompt, model=model, max_tokens=max_tokens)
         sections.append(section)
-        save_to_file(f"section_{i+1}.txt", section)
+        #save_to_file(f"section_{i+1}.txt", section)
     return sections
 
 
 def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in valid Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
-    save_to_file(f"improved_section_{i+1}.txt", improved_section)
+    #save_to_file(f"improved_section_{i+1}.txt", improved_section)
     return " ".join(improved_section)  # join the lines into a single string
 
 
