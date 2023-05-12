@@ -345,14 +345,15 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
     status.text('Generating semantic SEO readout...')
     semantic_readout = generate_semantic_improvements_guide(topic, summary,  model=model, max_tokens=max_tokens_outline)
-    st.markdown(semantic_readout)
+    
     
     status.text('Generating initial outline...')
     initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
 
     status.text('Improving the initial outline...')
     improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=1500)
-
+    st.markdown(improved_outline)
+    
     status.text('Generating sections based on the improved outline...')
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
 
