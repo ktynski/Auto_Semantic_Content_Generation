@@ -352,7 +352,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
     status.text('Improving the initial outline...')
     improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=1500)
-    st.markdown(str(improved_outline))
+    st.markdown(improved_outline)
     
     status.text('Generating sections based on the improved outline...')
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
@@ -363,6 +363,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     for i, section in enumerate(sections):
         section_string = '\n'.join(section)
         status.text(f'Improving section {i+1} of {len(sections)}...')
+        st.markdown(section_string)
         improved_sections.append(improve_section(section_string, i, model=model, max_tokens=1200))
 
 
@@ -375,6 +376,24 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 
 def main():
+    st.title('Long-form Article Generator with Semantic SEO Understanding')
+
+    st.markdown('''
+    Welcome to the long-form article generator! This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
+
+    Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on current search engine results. 
+
+    The process involves several steps:
+    1. Analyzing the SERPs (Search Engine Results Pages) for the provided topic.
+    2. Generating a Semantic SEO readout.
+    3. Creating an initial outline of the article.
+    4. Improving the initial outline based on the Semantic SEO readout.
+    5. Generating detailed sections for the article based on the improved outline.
+    6. Improving the sections for better readability and context.
+    7. And finally, creating a final draft of the long-form article.
+
+    Just input your topic below and let the AI do its magic!
+    ''')
     topic = st.text_input("Enter topic:", "Digital PR tips to earn media coverage in 2023")
     if st.button('Generate Content'):
         with st.spinner("Generating content..."):
