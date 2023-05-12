@@ -398,7 +398,7 @@ def main():
     if st.button('Generate Content'):
         with st.spinner("Generating content..."):
             final_draft = generate_article(topic)  # rename your main function to generate_article
-            st.markdown(final_draft)
+            #st.markdown(final_draft)
 
 if __name__ == "__main__":
     main()
