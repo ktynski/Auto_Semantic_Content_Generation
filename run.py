@@ -230,7 +230,7 @@ def summarize_nlp(df):
 
 
 
-def save_to_file(filename, content):
+#def save_to_file(filename, content):
     #with open(filename, 'w') as f:
         #f.write("\n".join(content))
 
