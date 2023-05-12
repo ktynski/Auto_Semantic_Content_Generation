@@ -332,7 +332,7 @@ def concatenate_files(file_names, output_file_name):
 
 
 
-def main(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
     query = topic
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -369,9 +369,17 @@ def main(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_secti
     return final_draft
     
 
-main("Digital PR tips to earn media coverage in 2023")
 
 
+def main():
+    topic = st.text_input("Enter topic:", "Digital PR tips to earn media coverage in 2023")
+    if st.button('Generate Content'):
+        with st.spinner("Generating content..."):
+            final_draft = generate_article(topic)  # rename your main function to generate_article
+            st.markdown(final_draft)
+
+if __name__ == "__main__":
+    main()
 
 
 
