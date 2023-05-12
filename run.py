@@ -356,7 +356,12 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
 
     status.text('Improving sections...')
-    improved_sections = [improve_section(section, i, model=model, max_tokens=3000) for i, section in enumerate(sections)]
+    
+    improved_sections = []
+    for i, section in enumerate(sections):
+        status.text(f'Improving section {i+1} of {len(sections)}...')
+        improved_sections.append(improve_section(section, i, model=model, max_tokens=3000))
+
 
     status.text('Creating final draft...')
     final_draft = '\n\n'.join(improved_sections)
