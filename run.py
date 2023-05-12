@@ -345,7 +345,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     print(f"Topic: {topic}\n")
 
     print(f"Semantic SEO Readout:")
-    #display(Markdown(str(semantic_readout)))
+    st.Markdown(str(semantic_readout))
 
     print("Generating initial outline...")
     initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
@@ -354,6 +354,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     print("Improving the initial outline...")
     improved_outline = improve_outline(initial_outline, semantic_readout, model='gpt-4', max_tokens=3000)
     print("Improved outline created.\n")
+    st.markdown(improved_outline)
 
     print("Generating sections based on the improved outline...")
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
@@ -367,7 +368,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
-    #display(Markdown(final_draft))
+    
     return final_draft
     
 
