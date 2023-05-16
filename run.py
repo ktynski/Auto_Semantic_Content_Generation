@@ -377,10 +377,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
-    st.subheader("API Key Configuration")
-
-    # Get user input for API key
-    user_api_key = st.text_input("Enter your OpenAI API key")
+    
     st.markdown('''
     Welcome to the long-form article generator! This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
 
@@ -388,11 +385,20 @@ def main():
 
     Just input your topic below and let the AI do its magic!
     ''')
+   
     topic = st.text_input("Enter topic:", "Digital PR tips to earn media coverage in 2023")
+
+    # Get user input for API key
+    user_api_key = st.text_input("Enter your OpenAI API key")
+
     if st.button('Generate Content'):
-        with st.spinner("Generating content..."):
-            final_draft = generate_article(topic)  # rename your main function to generate_article
-            #st.markdown(final_draft)
+        if user_api_key:
+            openai.api_key = user_api_key
+            with st.spinner("Generating content..."):
+                final_draft = generate_article(topic)
+                st.markdown(final_draft)
+        else:
+            st.warning("Please enter your OpenAI API key above.")
 
 if __name__ == "__main__":
     main()
