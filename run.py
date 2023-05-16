@@ -330,7 +330,7 @@ def concatenate_files(file_names, output_file_name):
     with open(output_file_name, 'w') as output_file:
         output_file.write(final_draft)
 
-    print("Final draft created.\n")
+    #print("Final draft created.\n")
     return final_draft
 
 
@@ -396,7 +396,7 @@ def main():
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
                 final_draft = generate_article(topic)
-                st.markdown(final_draft)
+                #st.markdown(final_draft)
         else:
             st.warning("Please enter your OpenAI API key above.")
 
