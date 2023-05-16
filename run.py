@@ -21,7 +21,7 @@ import re
 import streamlit as st
 
 import json
-openai.api_key = openai.api_key = os.environ['openai_api_key']
+#openai.api_key = openai.api_key = os.environ['openai_api_key']
 
 
 
@@ -377,7 +377,10 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
 def main():
     st.title('Long-form Article Generator with Semantic SEO Understanding')
+    st.subheader("API Key Configuration")
 
+    # Get user input for API key
+    user_api_key = st.text_input("Enter your OpenAI API key")
     st.markdown('''
     Welcome to the long-form article generator! This application leverages advanced AI to create comprehensive articles based on the topic you provide. 
 
