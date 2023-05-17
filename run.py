@@ -319,9 +319,9 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
                 temperature=temperature,
             )
             response = gpt_response['choices'][0]['message']['content'].strip()
-            formatted_response = response.strip().split('\n')
-            st.markdown(formatted_response)
-            return str(response)
+            
+            st.markdown(response)
+            return response
 
         except:
             st.write(f"Attempt {i+1} failed, retrying...")
