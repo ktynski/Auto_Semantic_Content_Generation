@@ -81,17 +81,19 @@ def scrape_google(search):
     results = []
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
         results.append(item)
-    
-    df = pd.json_normalize(results)
-    df = df[['title', 'url']] 
 
-    # Convert the results to a dataframe
-    #df = pd.DataFrame(results)
+    # Extract URLs from organic results
+    organic_results = [item['organicResults'] for item in results]
+    urls = [result['url'] for sublist in organic_results for result in sublist]
+
+    # Create DataFrame
+    df = pd.DataFrame(urls, columns=['url'])
 
     # Print the dataframe
     print(df)
     st.write(df)
     return df
+
 
 
 def scrape_article(url):
