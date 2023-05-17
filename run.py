@@ -94,7 +94,8 @@ def scrape_google(search):
 
     # Print the dataframe
     print(df)
-    st.write(df)
+    st.header("Scraped Data from SERP and SERP Links")
+    #st.write(df)
     return df
 
 
@@ -341,7 +342,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
         temperature=temperature,
     )
     response = gpt_response['choices'][0]['message']['content'].strip()
-
+    st.header("Semantic Improvements Guide")
     st.markdown(response,unsafe_allow_html=True)
     return str(response)
 
@@ -405,6 +406,7 @@ def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     #st.markdown(improved_section)
     improved_section = str(improved_section)
     #save_to_file(f"improved_section_{i+1}.txt", improved_section)
+    improved_section = '\n'.join(improved_section)
     st.markdown(improved_section,unsafe_allow_html=True)
     return " ".join(improved_section)  # join the lines into a single string
 
