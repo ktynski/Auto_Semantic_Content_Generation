@@ -66,7 +66,7 @@ def scrape_google(search):
         "includeUnfilteredResults": False,
         "maxPagesPerQuery": 1,
         "mobileResults": False,
-        "queries": [search],
+        "queries": search,
         "resultsPerPage": 100,
         "saveHtml": False,
         "saveHtmlToKeyValueStore": False
