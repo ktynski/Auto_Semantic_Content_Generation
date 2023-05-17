@@ -83,7 +83,7 @@ def scrape_google(search):
         results.append(item)
     
     df = pd.json_normalize(results)
-    df = df[['url']]
+    df = df[['title', 'url']] 
 
     # Convert the results to a dataframe
     #df = pd.DataFrame(results)
