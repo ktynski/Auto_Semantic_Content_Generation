@@ -83,6 +83,7 @@ def scrape_google(search):
         results.append(item)
     
     df = pd.json_normalize(results)
+    df = df[['url']]
 
     # Convert the results to a dataframe
     #df = pd.DataFrame(results)
@@ -150,7 +151,7 @@ def analyze_serps(query):
     df = scrape_google(query)
     # Scrape article text for each search result and store it in the dataframe
     for index, row in df.iterrows():
-        url = row['URL']
+        url = row['url']
         article_text = scrape_article(url)
         df.at[index, 'Article Text'] = article_text
     # Analyze the article text for each search result and store the NLP results in the dataframe
