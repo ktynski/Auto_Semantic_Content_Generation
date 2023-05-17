@@ -4,3 +4,4 @@ nltk
 xlsxwriter
 newspaper3k
 streamlit
+apify-client
