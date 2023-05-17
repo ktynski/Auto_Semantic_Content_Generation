@@ -142,7 +142,7 @@ def main(query):
         keyness_results = analyze_text(text)
         df.at[index, 'Keyness Results'] = keyness_results
     # Return the final dataframe
-    df.to_csv("NLP_Data_On_SERP_Links_Text.csv")
+    #df.to_csv("NLP_Data_On_SERP_Links_Text.csv")
     return df
 
 
@@ -154,6 +154,7 @@ def analyze_serps(query):
     # Scrape article text for each search result and store it in the dataframe
     for index, row in df.iterrows():
         url = row['url']
+        st.write(url)
         article_text = scrape_article(url)
         df.at[index, 'Article Text'] = article_text
     # Analyze the article text for each search result and store the NLP results in the dataframe
@@ -279,7 +280,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
             return response.strip().split('\n')
 
         except openai.api_resources.request_error.RequestError as e:
-            print(f"Attempt {i+1} failed, retrying...")
+            st.write(f"Attempt {i+1} failed, retrying...")
             time.sleep(3)  # Wait for 3 seconds before next try
 
     st.write("OpenAI is currently overloaded, please try again later.")
