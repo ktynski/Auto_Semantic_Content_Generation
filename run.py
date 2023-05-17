@@ -125,6 +125,7 @@ def analyze_text(text):
     results_str += '\nTop 20 Bigrams:\n'
     for bigram in bigrams:
         results_str += f'{bigram[0]} {bigram[1]}\n'
+    st.write(results_str)    
     return results_str
 
 # Define the main function to scrape Google search results and analyze the article text
