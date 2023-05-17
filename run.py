@@ -336,7 +336,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     
    
 
-def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1000):
+def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     #save_to_file("outline.txt", outline)
@@ -381,7 +381,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
 def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in valid Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
-    st.markdown(improved_section)
+    #st.markdown(improved_section)
     #save_to_file(f"improved_section_{i+1}.txt", improved_section)
     return " ".join(improved_section)  # join the lines into a single string
 
