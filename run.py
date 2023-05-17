@@ -107,14 +107,18 @@ def scrape_article(url):
     except:
         return ""
 
-    
+
+
 def truncate_to_token_length(text, max_length):
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
     tokens = tokenizer.encode(text)
     if len(tokens) > max_length:
         tokens = tokens[:max_length]
+        while len(tokens) > 0 and tokens[-1] not in tokenizer.get_special_tokens_mask(tokens):
+            tokens = tokens[:-1]
         text = tokenizer.decode(tokens)
     return text
+
 
 
 # Define a function to perform NLP analysis and return a string of keyness results
@@ -292,7 +296,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
                 temperature=temperature,
             )
             response = gpt_response['choices'][0]['message']['content'].strip()
-            response = str(response)
+            response = response
             return response
 
         except:
@@ -311,7 +315,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
             gpt_response = openai.ChatCompletion.create(
                 model=model,
                 messages=[
-                    {"role": "system", "content": "You are an expert at Semantic SEO. In particular, you are superhuman at taking the result of an NLP keyword analysis of a search engine results page for a given keyword, and using it to build a readout/report/guide that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in the SERP. Provide the result in well formatted markdown. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO expressed in the content that ranks on the first page of Google for the given query. With the following semantic data, please provide this readout/guide. This readout/guide should be useful to someone writing about the topic, and should not include instructions to add info to the article about the SERP itself. The SERP semantic SEO data is just to be used to help inform the guide/readout. Please provide the readout/guide in well organized and hierarchical."},
+                    {"role": "system", "content": "You are an expert at Semantic SEO. In particular, you are superhuman at taking the result of an NLP keyword analysis of a search engine results page for a given keyword, and using it to build a readout/report/guide that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in the SERP. This readout should include specific nlp data (for example most common keywords, bigrams,trigrams,quadgrams, etc within limits) Provide the result in well formatted markdown. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO expressed in the content that ranks on the first page of Google for the given query. With the following semantic data, please provide this readout/guide. This readout/guide should be useful to someone writing about the topic, and should not include instructions to add info to the article about the SERP itself. The SERP semantic SEO data is just to be used to help inform the guide/readout. Please provide the readout/guide in well organized and hierarchical."},
                     {"role": "user", "content": f"Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}],
                 max_tokens=max_tokens,
                 n=1,
@@ -377,7 +381,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
 def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in valid Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
-    st.markdown(str(improved_section))
+    st.markdown(improved_section)
     #save_to_file(f"improved_section_{i+1}.txt", improved_section)
     return " ".join(improved_section)  # join the lines into a single string
 
