@@ -283,6 +283,7 @@ def summarize_nlp(df):
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
+    st.write(prompt)
     #for i in range(3):
         #try:
     gpt_response = openai.ChatCompletion.create(
