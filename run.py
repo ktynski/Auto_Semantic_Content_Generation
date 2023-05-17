@@ -19,6 +19,8 @@ import openai
 import pandas as pd
 import re
 import streamlit as st
+from apify_client import ApifyClient
+import pandas as pd
 
 import json
 #openai.api_key = openai.api_key = os.environ['openai_api_key']
@@ -42,30 +44,49 @@ nltk.download('quadgram_collocations')
 
 
 # Define a function to scrape Google search results and create a dataframe
-def scrape_google(query):
-    # Set headers to mimic a web browser
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-    # Build the URL with the query parameter
-    url = f'https://www.google.com/search?q={query}'
-    # Send a request to the URL and store the HTML content
-    html = requests.get(url, headers=headers).content
-    # Use BeautifulSoup to parse the HTML content
-    soup = BeautifulSoup(html, 'html.parser')
-    # Find all the search result elements
-    search_results = soup.find_all('div', {'class': 'g'})
-    # Initialize an empty list to store the search results
+from apify_client import ApifyClient
+import pandas as pd
+import streamlit as st
+
+def scrape_google(search):
+    # Define the Apify API URL and the actor's name
+    APIFY_API_URL = 'https://api.apify.com/v2'
+    ACTOR_NAME = 'apify/google-search-scraper'
+
+    # Retrieve the Apify API key from Streamlit secrets
+    APIFY_API_KEY = st.secrets["APIFY_API_KEY"]
+
+    # Initialize the ApifyClient with your API token
+    client = ApifyClient(APIFY_API_KEY)
+
+    # Prepare the actor input
+    run_input = {
+        "csvFriendlyOutput": False,
+        "customDataFunction": "async ({ input, $, request, response, html }) => {\n  return {\n    pageTitle: $('title').text(),\n  };\n};",
+        "includeUnfilteredResults": False,
+        "maxPagesPerQuery": 1,
+        "mobileResults": False,
+        "queries": [search],
+        "resultsPerPage": 100,
+        "saveHtml": False,
+        "saveHtmlToKeyValueStore": False
+    }
+
+    print(f"Running Google Search Scrape for {search}")
+    # Run the actor and wait for it to finish
+    run = client.actor(ACTOR_NAME).call(run_input=run_input)
+    print(f"Finished Google Search Scrape for {search}")
+
+    # Fetch the actor results from the run's dataset
     results = []
-    # Loop through each search result and extract the relevant information
-    for result in search_results:
-        try:
-            title = result.find('h3').text
-            url = result.find('a')['href']
-            results.append((title, url))
-        except:
-            continue
-    # Create a dataframe from the search results
-    df = pd.DataFrame(results, columns=['Title', 'URL'])
-    df.to_csv("Scraped_URLs_From_SERPS.csv")
+    for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+        results.append(item)
+
+    # Convert the results to a dataframe
+    df = pd.DataFrame(results)
+
+    # Print the dataframe
+    print(df)
     return df
 
 
