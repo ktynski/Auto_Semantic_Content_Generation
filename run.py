@@ -283,28 +283,28 @@ def summarize_nlp(df):
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
-    for i in range(3):
-        try:
-            gpt_response = openai.ChatCompletion.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
-                    {"role": "user", "content": prompt}],
-                max_tokens=max_tokens,
-                n=1,
-                stop=None,
-                temperature=temperature,
-            )
-            response = gpt_response['choices'][0]['message']['content'].strip()
-            response = response
-            return response
+    #for i in range(3):
+        #try:
+    gpt_response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+            {"role": "user", "content": prompt}],
+        max_tokens=max_tokens,
+        n=1,
+        stop=None,
+        temperature=temperature,
+    )
+    response = gpt_response['choices'][0]['message']['content'].strip()
+    response = response
+    return response
 
-        except:
-            st.write(f"Attempt {i+1} failed, retrying...")
-            time.sleep(3)  # Wait for 3 seconds before next try
+        #except:
+            #st.write(f"Attempt {i+1} failed, retrying...")
+            #time.sleep(3)  # Wait for 3 seconds before next try
 
-    st.write("OpenAI is currently overloaded, please try again later.")
-    return None
+    #st.write("OpenAI is currently overloaded, please try again later.")
+    #return None
 
 
 
