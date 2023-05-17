@@ -26,7 +26,7 @@ from transformers import GPT2Tokenizer
 
 import json
 #openai.api_key = openai.api_key = os.environ['openai_api_key']
-
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 
 
 nltk.download('stopwords')
