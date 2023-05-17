@@ -261,20 +261,30 @@ def summarize_nlp(df):
     #with open(filename, 'w') as f:
         #f.write("\n".join(content))
 
+
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
-    gpt_response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
-            {"role": "user", "content": prompt}],
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-    )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    #print(response)
-    return response.strip().split('\n')
+    for i in range(3):
+        try:
+            gpt_response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+                    {"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
+            )
+            response = gpt_response['choices'][0]['message']['content'].strip()
+            return response.strip().split('\n')
+
+        except openai.api_resources.request_error.RequestError as e:
+            print(f"Attempt {i+1} failed, retrying...")
+            time.sleep(3)  # Wait for 3 seconds before next try
+
+    st.write("OpenAI is currently overloaded, please try again later.")
+    return None
+
 
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
     gpt_response = openai.ChatCompletion.create(
