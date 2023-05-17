@@ -109,16 +109,17 @@ def scrape_article(url):
 
 
 
-def truncate_to_token_length(text, max_length):
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-    tokens = tokenizer.encode(text)
-    if len(tokens) > max_length:
-        tokens = tokens[:max_length]
-        while len(tokens) > 0 and tokens[-1] not in tokenizer.get_special_tokens_mask(tokens):
-            tokens = tokens[:-1]
-        text = tokenizer.decode(tokens)
-    return text
-
+def truncate_to_token_length(input_string, max_tokens=1700):
+    # Tokenize the input string
+    tokens = tokenizer.tokenize(input_string)
+    
+    # Truncate the tokens to a maximum of max_tokens
+    truncated_tokens = tokens[:max_tokens]
+    
+    # Convert the truncated tokens back to a string
+    truncated_string = tokenizer.convert_tokens_to_string(truncated_tokens)
+    
+    return truncated_string
 
 
 # Define a function to perform NLP analysis and return a string of keyness results
