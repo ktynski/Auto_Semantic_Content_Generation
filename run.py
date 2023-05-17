@@ -404,7 +404,7 @@ def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     #st.markdown(improved_section)
     #save_to_file(f"improved_section_{i+1}.txt", improved_section)
-    st.markdown(str(improved_section),unsafe_allow_html=True)
+    st.markdown(str(improved_section[0]),unsafe_allow_html=True)
     return " ".join(improved_section)  # join the lines into a single string
 
 
