@@ -21,6 +21,8 @@ import re
 import streamlit as st
 from apify_client import ApifyClient
 import pandas as pd
+import transformers
+from transformers import GPT2Tokenizer
 
 import json
 #openai.api_key = openai.api_key = os.environ['openai_api_key']
@@ -105,6 +107,14 @@ def scrape_article(url):
     except:
         return ""
 
+    
+def truncate_to_token_length(text, max_length):
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+    tokens = tokenizer.encode(text)
+    if len(tokens) > max_length:
+        tokens = tokens[:max_length]
+        text = tokenizer.decode(tokens)
+    return text
 
 
 # Define a function to perform NLP analysis and return a string of keyness results
@@ -268,6 +278,7 @@ def summarize_nlp(df):
 
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+    prompt = truncate_to_token_length(prompt,1500)
     for i in range(3):
         try:
             gpt_response = openai.ChatCompletion.create(
@@ -294,6 +305,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
 
 
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
+    prompt = truncate_to_token_length(prompt,1500)
     for i in range(3):
         try:
             gpt_response = openai.ChatCompletion.create(
