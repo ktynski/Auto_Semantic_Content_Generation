@@ -50,6 +50,7 @@ from apify_client import ApifyClient
 import pandas as pd
 import streamlit as st
 
+@st.cache_data
 def scrape_google(search):
     # Define the Apify API URL and the actor's name
     APIFY_API_URL = 'https://api.apify.com/v2'
@@ -97,7 +98,7 @@ def scrape_google(search):
     return df
 
 
-
+@st.cache_data
 def scrape_article(url):
     try:
         article = Article(url)
@@ -108,7 +109,7 @@ def scrape_article(url):
         return ""
 
 
-
+@st.cache_data
 def truncate_to_token_length(input_string, max_tokens=1700):
     # Tokenize the input string
     tokens = tokenizer.tokenize(input_string)
@@ -123,6 +124,7 @@ def truncate_to_token_length(input_string, max_tokens=1700):
 
 
 # Define a function to perform NLP analysis and return a string of keyness results
+@st.cache_data
 def analyze_text(text):
     # Tokenize the text and remove stop words
     tokens = [word.lower() for word in word_tokenize(text) if word.isalpha() and word.lower() not in stopwords.words('english')]
@@ -164,6 +166,7 @@ def main(query):
 
 
 # Define the main function to scrape Google search results and analyze the article text
+@st.cache_data
 def analyze_serps(query):
     # Scrape Google search results and create a dataframe
     df = scrape_google(query)
@@ -219,6 +222,8 @@ def analyze_serps(query):
 
 
 # Define a function to summarize the NLP results from the dataframe
+
+@st.cache_data
 def summarize_nlp(df):
     # Calculate the total number of search results
     total_results = len(df)
@@ -281,7 +286,7 @@ def summarize_nlp(df):
     #with open(filename, 'w') as f:
         #f.write("\n".join(content))
 
-
+@st.cache_data
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
@@ -309,7 +314,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
     #return None
 
 
-
+@st.cache_data
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
     #for i in range(3):
@@ -339,13 +344,13 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     #return None
     
    
-
+@st.cache_data
 def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     #save_to_file("outline.txt", outline)
     return outline
-
+@st.cache_data
 def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following article outline, please improve and extend this outline significantly as much as you can keeping in mind the SEO keywords and data being provided in our semantic seo readout. Do not include a section about semantic SEO itself, you are using the readout to better inform your creation of the outline. Try and include and extend this as much as you can. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
@@ -353,7 +358,7 @@ def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens
     return improved_outline
 
 
-
+@st.cache_data
 def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
     sections = []
 
@@ -381,7 +386,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
         #save_to_file(f"section_{i+1}.txt", section)
     return sections
 
-
+@st.cache_data
 def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Always provide the updated section in valid Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
@@ -393,7 +398,7 @@ def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
 
 
 
-
+@st.cache_data
 def concatenate_files(file_names, output_file_name):
     final_draft = ''
     
@@ -408,7 +413,7 @@ def concatenate_files(file_names, output_file_name):
     return final_draft
 
 
-
+@st.cache_data
 def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
     status = st.empty()
     status.text('Analyzing SERPs...')
