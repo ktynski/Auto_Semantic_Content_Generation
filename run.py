@@ -254,7 +254,8 @@ def summarize_nlp(df):
     summary += f'Most common bigrams: {top_bigrams} ({len(bigram_freqs)} total bigrams)\n'
     summary += f'Most common trigrams: {top_trigrams} ({len(trigram_freqs)} total trigrams)\n'
     summary += f'Most common quadgrams: {top_quadgrams} ({len(quadgram_freqs)} total quadgrams)\n'
-    st.write(summary)
+    summary = '\n'.join(summary)
+    st.markdown(summary)
     return summary
 
 
@@ -404,7 +405,8 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
 
     status.text('Improving the initial outline...')
     improved_outline = improve_outline(initial_outline, semantic_readout, model=model, max_tokens=1500)
-    st.markdown(improved_outline)
+    improved_outline = '\n'.join(improved_outline)
+    #st.markdown(improved_outline)
     
     status.text('Generating sections based on the improved outline...')
     sections = generate_sections(improved_outline, model=model, max_tokens=max_tokens_section)
@@ -415,14 +417,15 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     for i, section in enumerate(sections):
         section_string = '\n'.join(section)
         status.text(f'Improving section {i+1} of {len(sections)}...')
-        st.markdown(section_string)
+        
         improved_sections.append(improve_section(section_string, i, model=model, max_tokens=1200))
 
 
 
     status.text('Creating final draft...')
-    final_draft = '\n\n'.join(['\n'.join(section) for section in improved_sections])
-
+    final_content = '\n'.join(improved_sections)
+    st.markdown(final_content)
+   
 
 
 
