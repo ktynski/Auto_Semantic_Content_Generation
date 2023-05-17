@@ -81,9 +81,11 @@ def scrape_google(search):
     results = []
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
         results.append(item)
+    
+    df = pd.json_normalize(results)
 
     # Convert the results to a dataframe
-    df = pd.DataFrame(results)
+    #df = pd.DataFrame(results)
 
     # Print the dataframe
     print(df)
