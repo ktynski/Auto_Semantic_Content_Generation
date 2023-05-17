@@ -403,8 +403,9 @@ def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Always provide the updated section in valid Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     #st.markdown(improved_section)
+    improved_section = str(improved_section)
     #save_to_file(f"improved_section_{i+1}.txt", improved_section)
-    st.markdown(str(improved_section[0]),unsafe_allow_html=True)
+    st.markdown(improved_section,unsafe_allow_html=True)
     return " ".join(improved_section)  # join the lines into a single string
 
 
@@ -479,6 +480,8 @@ def main():
     Not only does it generate articles, but it also includes a Semantic SEO understanding. This means it takes into consideration the semantic context and relevance of your topic, based on current search engine results.
 
     Just input your topic below and let the AI do its magic!
+    
+    ** If you get an error, (sometimes OpenAI will be overloaded and not work), just press generate again and it should start where it left off.
     ''')
    
     topic = st.text_input("Enter topic:", "Digital PR tips to earn media coverage in 2023")
