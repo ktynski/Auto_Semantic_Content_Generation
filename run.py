@@ -154,7 +154,7 @@ def analyze_serps(query):
     # Scrape article text for each search result and store it in the dataframe
     for index, row in df.iterrows():
         url = row['url']
-        st.write(url)
+        #st.write(url)
         article_text = scrape_article(url)
         df.at[index, 'Article Text'] = article_text
     # Analyze the article text for each search result and store the NLP results in the dataframe
