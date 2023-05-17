@@ -322,7 +322,32 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
     #st.write("OpenAI is currently overloaded, please try again later.")
     #return None
 
+@st.cache_data(show_spinner=False)
+def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+    prompt = truncate_to_token_length(prompt,2500)
+    #st.write(prompt)
+    #for i in range(3):
+        #try:
+    gpt_response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+            {"role": "user", "content": prompt}],
+        max_tokens=max_tokens,
+        n=1,
+        stop=None,
+        temperature=temperature,
+    )
+    response = gpt_response['choices'][0]['message']['content'].strip()
+    response = response
+    return response
 
+        #except:
+            #st.write(f"Attempt {i+1} failed, retrying...")
+            #time.sleep(3)  # Wait for 3 seconds before next try
+
+    #st.write("OpenAI is currently overloaded, please try again later.")
+    #return None
 
 @st.cache_data(show_spinner=False)
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
@@ -365,7 +390,7 @@ def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1500):
 @st.cache_data(show_spinner=False)
 def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following article outline, please improve and extend this outline significantly as much as you can keeping in mind the SEO keywords and data being provided in our semantic seo readout. Do not include a section about semantic SEO itself, you are using the readout to better inform your creation of the outline. Try and include and extend this as much as you can. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
-    improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
+    improved_outline = generate_content2(prompt, model=model, max_tokens=max_tokens)
     #save_to_file("improved_outline.txt", improved_outline)
     return improved_outline
 
