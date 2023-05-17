@@ -196,6 +196,7 @@ def analyze_serps(query):
     #writer = pd.ExcelWriter('NLP_Based_SERP_Results.xlsx', engine='xlsxwriter')
     #df.to_excel(writer, sheet_name='Sheet1', index=False)
     #writer.save()
+    st.write(df)
     # Return the final dataframe
     return df
 
