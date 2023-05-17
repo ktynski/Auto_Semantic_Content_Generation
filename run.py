@@ -410,7 +410,8 @@ def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
 
 
 
-@st.cache_data
+
+@st.cache_data(show_spinner=False)
 def concatenate_files(file_names, output_file_name):
     final_draft = ''
     
@@ -425,7 +426,8 @@ def concatenate_files(file_names, output_file_name):
     return final_draft
 
 
-@st.cache_data
+
+@st.cache_data(show_spinner=False)
 def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
     status = st.empty()
     status.text('Analyzing SERPs...')
