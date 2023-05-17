@@ -87,6 +87,7 @@ def scrape_google(search):
 
     # Print the dataframe
     print(df)
+    st.write(df)
     return df
 
 
