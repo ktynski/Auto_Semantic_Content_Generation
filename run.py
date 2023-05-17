@@ -281,7 +281,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
             response = gpt_response['choices'][0]['message']['content'].strip()
             return response.strip().split('\n')
 
-        except openai.api_resources.request_error.RequestError as e:
+        except:
             st.write(f"Attempt {i+1} failed, retrying...")
             time.sleep(3)  # Wait for 3 seconds before next try
 
@@ -308,8 +308,8 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
             st.markdown(formatted_response)
             return str(response)
 
-        except openai.api_resources.request_error.RequestError as e:
-            print(f"Attempt {i+1} failed, retrying...")
+        except:
+            st.write(f"Attempt {i+1} failed, retrying...")
             time.sleep(3)  # Wait for 3 seconds before next try
 
     st.write("OpenAI is currently overloaded, please try again later.")
