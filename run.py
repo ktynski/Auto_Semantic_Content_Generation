@@ -209,6 +209,7 @@ def analyze_serps(query):
         # Calculate the part-of-speech tags for the text
         pos_tags = nltk.pos_tag(tokens)
         # Store the NLP results in the dataframe
+        df.at[index, "Facts"] = generate_content3(text)
         df.at[index, 'Most Common Words'] = ', '.join([word[0] for word in most_common])
         df.at[index, 'Least Common Words'] = ', '.join([word[0] for word in least_common])
         df.at[index, 'Most Common Bigrams'] = ', '.join([f'{bigram[0]} {bigram[1]}' for bigram in bigrams])
@@ -276,6 +277,7 @@ def summarize_nlp(df):
     #print(f'Most common part-of-speech tags: {all_tags}')
     summary = ""
     summary += f'Total results: {total_results}\n'
+    summary += f'Average article length: {avg_length} characters\n'
     summary += f'Average article length: {avg_length} characters\n'
     summary += f'Median words per article: {median_words}\n'
     summary += f'Most common words: {top_words} ({len(word_freqs)} total words)\n'
@@ -349,6 +351,29 @@ def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
     #st.write("OpenAI is currently overloaded, please try again later.")
     #return None
 
+    
+@st.cache_data(show_spinner=False)
+def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+    prompt = truncate_to_token_length(prompt,2500)
+    #st.write(prompt)
+    #for i in range(3):
+        #try:
+    gpt_response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "Simulate an exceptionally talented investigative journalist and researcher. Given the following text, please write a short paragraph providing only the most important facts and takeaways that can be used later when writing a full analysis or article."},
+            {"role": "user", "content": f"Use the following text to provide the readout: {prompt}"],
+        max_tokens=max_tokens,
+        n=1,
+        stop=None,
+        temperature=temperature,
+    )
+    response = gpt_response['choices'][0]['message']['content'].strip()
+    response = response
+    return response    
+    
+    
+    
 @st.cache_data(show_spinner=False)
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
