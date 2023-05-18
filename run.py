@@ -331,7 +331,7 @@ def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
     gpt_response = openai.ChatCompletion.create(
         model=model,
         messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can. Return the results in Nicely formatted markdown please."},
             {"role": "user", "content": prompt}],
         max_tokens=max_tokens,
         n=1,
@@ -427,11 +427,9 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
 @st.cache_data(show_spinner=False)
 def improve_section(section, i, model="gpt-3.5-turbo", max_tokens=1500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Keep whatever hierarchy you find. Only provide the updated section, not the text of your recommendation, just make the changes. Always provide the updated section in valid Markdown please. Updated Section with improvements:"
+    prompt = str(prompt)
     improved_section = generate_content2(prompt, model=model, max_tokens=max_tokens)
     #st.markdown(improved_section)
-    improved_section = str(improved_section)
-    #save_to_file(f"improved_section_{i+1}.txt", improved_section)
-    improved_section = '\n'.join(improved_section)
     st.markdown(improved_section,unsafe_allow_html=True)
     return " ".join(improved_section)  # join the lines into a single string
 
@@ -485,7 +483,7 @@ def generate_article(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_
     for i, section in enumerate(sections):
         section_string = '\n'.join(section)
         status.text(f'Improving section {i+1} of {len(sections)}...')
-        
+        time.sleep(5)
         improved_sections.append(improve_section(section_string, i, model=model, max_tokens=1200))
 
 
