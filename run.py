@@ -418,7 +418,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
         full_outline += '\n'.join(improved_outline)
         specific_section = ", and focusing specifically on the following section: "
         specific_section += section_outline
-        prompt = full_outline + specific_section + ", please write a thorough section that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Keep whatever hierarchy you find. Section text:"
+        prompt =  specific_section + ", please write a thorough section that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Keep whatever hierarchy you find. Never write a conclusion part of a section unless the section itself is supposed to be a conclusion. Section text:"
         section = generate_content(prompt, model=model, max_tokens=max_tokens)
         sections.append(section)
         #save_to_file(f"section_{i+1}.txt", section)
