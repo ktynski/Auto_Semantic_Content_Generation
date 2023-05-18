@@ -362,7 +362,7 @@ def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented investigative journalist and researcher. Given the following text, please write a short paragraph providing only the most important facts and takeaways that can be used later when writing a full analysis or article."},
-            {"role": "user", "content": f"Use the following text to provide the readout: {prompt}"],
+            {"role": "user", "content": f"Use the following text to provide the readout: {prompt}"}],
         max_tokens=max_tokens,
         n=1,
         stop=None,
