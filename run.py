@@ -301,107 +301,110 @@ def summarize_nlp(df):
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
-    #for i in range(3):
-        #try:
-    gpt_response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
-            {"role": "user", "content": prompt}],
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-    )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    response = response
-    return response.strip().split('\n')
+    for i in range(3):
+        try:
+            gpt_response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+                    {"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
+            )
+            response = gpt_response['choices'][0]['message']['content'].strip()
+            response = response
+            return response.strip().split('\n')
 
-        #except:
+        except:
             #st.write(f"Attempt {i+1} failed, retrying...")
             #time.sleep(3)  # Wait for 3 seconds before next try
 
-    #st.write("OpenAI is currently overloaded, please try again later.")
-    #return None
+    st.write("OpenAI is currently overloaded, please try again later.")
+    return None
 
 @st.cache_data(show_spinner=False)
 def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
-    #for i in range(3):
-        #try:
-    gpt_response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can. Return the results in Nicely formatted markdown please."},
-            {"role": "user", "content": prompt}],
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
+    for i in range(3):
+        try:
+            gpt_response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can. Return the results in Nicely formatted markdown please."},
+                    {"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
     )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    response = response
-    return response
+            response = gpt_response['choices'][0]['message']['content'].strip()
+            response = response
+            return response
 
-        #except:
+        except:
             #st.write(f"Attempt {i+1} failed, retrying...")
             #time.sleep(3)  # Wait for 3 seconds before next try
 
-    #st.write("OpenAI is currently overloaded, please try again later.")
-    #return None
+    st.write("OpenAI is currently overloaded, please try again later.")
+    return None
 
     
 @st.cache_data(show_spinner=False)
 def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,2500)
     #st.write(prompt)
-    #for i in range(3):
-        #try:
-    gpt_response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented investigative journalist and researcher. Given the following text, please write a short paragraph providing only the most important facts and takeaways that can be used later when writing a full analysis or article."},
-            {"role": "user", "content": f"Use the following text to provide the readout: {prompt}"}],
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-    )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    response = response
-    return response    
-    
-    
+    for i in range(3):
+        try:
+            gpt_response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "Simulate an exceptionally talented investigative journalist and researcher. Given the following text, please write a short paragraph providing only the most important facts and takeaways that can be used later when writing a full analysis or article."},
+                    {"role": "user", "content": f"Use the following text to provide the readout: {prompt}"}],
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
+            )
+            response = gpt_response['choices'][0]['message']['content'].strip()
+            response = response
+            return response    
+         except:
+            st.write(f"Attempt {i+1} failed, retrying...")
+            time.sleep(3)  # Wait for 3 seconds before next try
+    st.write("OpenAI is currently overloaded, please try again later.")
+    return None
     
 @st.cache_data(show_spinner=False)
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
     prompt = truncate_to_token_length(prompt,1500)
-    #for i in range(3):
-        #try:
-    gpt_response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": """You are an expert at Semantic SEO. In particular, you are superhuman at taking  a given NLTK report on a given text corpus compiled from the text of the linked pages returned for a google search.
-            and using it to build a comprehensive set of instructions for an article writer that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in NLTK data from the SERP corpus. 
-             Provide the result in well formatted markdown. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO with a focus on what is most imprtant from a semantic SEO perspective."""},
-            {"role": "user", "content": f"Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}],
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-    )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    st.header("Semantic Improvements Guide")
-    st.markdown(response,unsafe_allow_html=True)
-    return str(response)
+    for i in range(3):
+        try:
+            gpt_response = openai.ChatCompletion.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": """You are an expert at Semantic SEO. In particular, you are superhuman at taking  a given NLTK report on a given text corpus compiled from the text of the linked pages returned for a google search.
+                    and using it to build a comprehensive set of instructions for an article writer that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in NLTK data from the SERP corpus. 
+                     Provide the result in well formatted markdown. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO with a focus on what is most imprtant from a semantic SEO perspective."""},
+                    {"role": "user", "content": f"Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}],
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
+            )
+            response = gpt_response['choices'][0]['message']['content'].strip()
+            st.header("Semantic Improvements Guide")
+            st.markdown(response,unsafe_allow_html=True)
+            return str(response)
 
-        #except:
-            #st.write(f"Attempt {i+1} failed, retrying...")
-            #time.sleep(3)  # Wait for 3 seconds before next try
+        except:
+            st.write(f"Attempt {i+1} failed, retrying...")
+            time.sleep(3)  # Wait for 3 seconds before next try
 
-    #st.write("OpenAI is currently overloaded, please try again later.")
-    #return None
+    st.write("OpenAI is currently overloaded, please try again later.")
+    return None
     
    
 
@@ -543,12 +546,9 @@ def main():
         if user_api_key:
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
-                for i in range(3):
-                    try:
-                        final_draft = generate_article(topic)
-                        #st.markdown(final_draft)
-                    except:
-                        print("generate article failed")
+            final_draft = generate_article(topic)
+            st.markdown(final_draft)
+                    
         else:
             st.warning("Please enter your OpenAI API key above.")
 
