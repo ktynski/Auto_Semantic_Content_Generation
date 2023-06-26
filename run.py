@@ -371,7 +371,7 @@ def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
             response = gpt_response['choices'][0]['message']['content'].strip()
             response = response
             return response    
-         except:
+        except:
             time.sleep(3)  # Wait for 3 seconds before next try
             st.write("OpenAI is currently overloaded, please try again later.")
     return None
