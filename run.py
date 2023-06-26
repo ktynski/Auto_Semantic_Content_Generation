@@ -543,8 +543,12 @@ def main():
         if user_api_key:
             openai.api_key = user_api_key
             with st.spinner("Generating content..."):
-                final_draft = generate_article(topic)
-                #st.markdown(final_draft)
+                for i in range(3):
+                    try:
+                        final_draft = generate_article(topic)
+                        #st.markdown(final_draft)
+                    except:
+                        print("generate article failed")
         else:
             st.warning("Please enter your OpenAI API key above.")
 
