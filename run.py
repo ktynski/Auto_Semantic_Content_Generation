@@ -348,7 +348,7 @@ def generate_content2(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
             #st.write(f"Attempt {i+1} failed, retrying...")
             #time.sleep(3)  # Wait for 3 seconds before next try
 
-    st.write("OpenAI is currently overloaded, please try again later.")
+            st.write("OpenAI is currently overloaded, please try again later.")
     return None
 
     
@@ -374,7 +374,7 @@ def generate_content3(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperatur
          except:
             st.write(f"Attempt {i+1} failed, retrying...")
             time.sleep(3)  # Wait for 3 seconds before next try
-    st.write("OpenAI is currently overloaded, please try again later.")
+            st.write("OpenAI is currently overloaded, please try again later.")
     return None
     
 @st.cache_data(show_spinner=False)
@@ -403,7 +403,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
             st.write(f"Attempt {i+1} failed, retrying...")
             time.sleep(3)  # Wait for 3 seconds before next try
 
-    st.write("OpenAI is currently overloaded, please try again later.")
+            st.write("OpenAI is currently overloaded, please try again later.")
     return None
     
    
